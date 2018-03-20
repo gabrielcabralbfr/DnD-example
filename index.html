@@ -70,7 +70,6 @@
     function drop(event) {
         event.preventDefault();
         let data = event.dataTransfer.getData("text");
-        // event.target.appendChild(document.getElementsByClassName(data)[0]);
 
         var node = document.createElement("div");
         node.setAttribute('class', data);
