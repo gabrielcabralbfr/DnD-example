@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Drag and Drop</title>
+
+    <style>
+        .leftbox,
+        .rightbox {
+            float: left;
+            width: 250px;
+            height: 250px;
+        }
+
+        .leftbox {
+            border: 2px solid red;
+        }
+
+        .rightbox {
+            border: 2px solid yellow;
+            position: relative;
+
+        }
+
+        .item-to-drag {
+            width: 250px;
+            height: 250px;
+            background-color: #000;
+        }
+
+        .item-to-drag:hover {
+            cursor: move;
+        }
+
+        .new {
+            position: absolute;
+            bottom: -255px;
+            right: -1px;
+            width: 250px;
+            height: 250px;
+            border: 2px solid yellow;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='dragged' class="leftbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div draggable="true" ondragstart="drag(event)" class="item-to-drag"></div>
+    </div>
+
+    <div id='dropped' class="rightbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+    </div>
+</body>
+
+<script>
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.className.split(' ')[0]);
+
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        let data = event.dataTransfer.getData("text");
+        // event.target.appendChild(document.getElementsByClassName(data)[0]);
+
+        var node = document.createElement("div");
+        node.setAttribute('class', data);
+        node.setAttribute('id', 'remove');
+        event.target.appendChild(node);
+
+        // var blankNode = document.createElement("div");
+        // node.setAttribute('class', 'new');
+        // document.getElementsByClassName("rightbox")[0].appendChild(node);
+    }
+
+
+    document.getElementsByTagName('div')[0].addEventListener('click', function () {
+        let remove = document.getElementById('remove');
+        if (remove) {
+            remove.addEventListener("click", function () {
+                // element.parent.removeChild(element);
+                alert("aaa");
+            });
+        }
+    })
+</script>
+
+</html>
