@@ -2,101 +2,119 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Drag and Drop</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Drag and Drop</title>
 
-    <style>
-       .leftbox,
-.rightbox {
-  float: left;
-  width: 250px;
-  height: 250px;
-}
-.leftbox {
-  border: 2px solid red;
-}
-.rightbox {
-  border: 2px solid yellow;    position: relative;
+  <style>
+    .leftbox,
+    .rightbox {
+      float: left;
+      width: 250px;
+      height: 150px;
+    }
 
-}
+    .leftbox {
+      border: 2px solid red;
+    }
 
-#dropped:last-child{
-    position: relative;
+    .rightbox {
+      border: 2px solid yellow;
+      position: relative;
+      width: 100%;
+    }
 
-}
+    #dropped:last-child {
+      position: relative;
 
-.item-to-drag {
-  width: 250px;
-  height: 250px;
-  background-color: #000;
-}
-.item-to-drag:hover {
-  cursor: move;
-}
-.new {
-  position: absolute;
-  bottom: -255px;
-  right: -1px;
-  width: 250px;
-  height: 250px;
-  border: 2px solid yellow;
-}
+    }
 
-.questao{
-  width: 240px;
-  height: 250px;
-  border: 2px red solid;
-}
-    </style>
+    .item-to-drag {
+      width: 250px;
+      height: 150px;
+      /* background-color: #000;
+      opacity: 0.3; */
+    }
+
+    .item-to-drag:hover {
+      cursor: move;
+    }
+
+    .new {
+      position: absolute;
+      bottom: -255px;
+      right: -1px;
+      width: 250px;
+      height: 150px;
+      border: 2px solid yellow;
+    }
+
+    .questao {
+      width: 100%;
+      height: 150px;
+      background-color: green;
+      transition-property: background-color;
+      transition-duration: .5s;
+    }
+
+    #container {
+      width: 70%;
+      height: 1900px;
+      border: 2px solid green;
+      float: left;
+    }
+  </style>
 </head>
 
 <body>
-    <div id='dragged' class="leftbox" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <div draggable="true" ondragstart="drag(event)" class="item-to-drag"></div>
-    </div>
+  <div id='dragged' class="leftbox" ondragover="allowDrop(event)">
+    <div draggable="true" ondragstart="drag(event)" class="item-to-drag" data-question-type='questao-aberta'><h1>Aberta</h1></div>
+    <div draggable="true" ondragstart="drag(event)" class="item-to-drag" data-question-type='questao-seletiva'><h1>Seletiva</h1></div>
+    
+  </div>
 
+  <div id="container">
     <div id='dropped' class="rightbox" ondrop="drop(event)" ondragover="allowDrop(event)">
 
     </div>
+  </div>
 </body>
 
 <script>
-   function allowDrop(event) {
-  event.preventDefault();
-}
-function drag(event) {
-  event.dataTransfer.setData("text", event.target.className.split(' ')[0]);
-}
-function drop(event) {
-  event.preventDefault();
-  let data = event.dataTransfer.getData("text");
-  var node = document.createElement("div");
-  node.setAttribute('class', 'questao');
-  node.setAttribute('id', 'remove');
-  event.target.appendChild(node);
-  
-  var blankNode = document.createElement("div");
-  blankNode.setAttribute('class', 'new');
-  blankNode.setAttribute('id', 'dropped');
-  blankNode.setAttribute('class', 'rightbox');
-  blankNode.setAttribute('ondrop', 'drop(event)');
-  blankNode.setAttribute('ondragover', 'allowDrop(event)');
+  function allowDrop(event) {
+    event.preventDefault();
+  }
+  function drag(event) {
+    event.dataTransfer.setData("text", event.target.className.split(' ')[0]);
+  }
+  function drop(event) {
+    event.preventDefault();
+    let data = event.dataTransfer.getData("text");
 
-  document.getElementsByClassName("rightbox")[0].appendChild(blankNode);
-}
+    createQuestion();
 
+    createBlank();
 
-// document.getElementsByTagName('div')[0].addEventListener('click', function () {
-//   let remove = document.getElementById('remove');
-//   if (remove) {
-//     remove.addEventListener("click", function () {
-//       // element.parent.removeChild(element);
-//       alert("aaa");
-//     });
-//   }
-// })
+  }
+
+  function createQuestion() {
+    var node = document.createElement("div");
+    node.setAttribute('class', 'questao');
+    // node.setAttribute('data-question-type', event.target.attributes.getNamedItem('question-type').value);
+    event.target.appendChild(node);
+  }
+
+  function createBlank() {
+    var blankNode = document.createElement("div");
+    blankNode.setAttribute('class', 'new');
+    blankNode.setAttribute('id', 'dropped');
+    blankNode.setAttribute('class', 'rightbox');
+    blankNode.setAttribute('ondrop', 'drop(event)');
+    blankNode.setAttribute('ondragover', 'allowDrop(event)');
+
+    document.getElementById("container").appendChild(blankNode);
+  }
 
 </script>
 
